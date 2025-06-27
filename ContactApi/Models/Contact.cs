@@ -6,6 +6,7 @@ namespace ContactApi.Models
     public class Contact
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -21,9 +22,16 @@ namespace ContactApi.Models
         [MaxLength(255)]
         public string Email { get; set; } // Make unique via Fluent API
 
+        [Phone]
+        [MaxLength(20)]
+        public string? Phone { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
         public string? PasswordHash { get; set; }
 
         // Foreign key to Category
+        [Required]
         [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
 
@@ -37,12 +45,5 @@ namespace ContactApi.Models
         // Free text for other subcategory if Category = "Other"
         [MaxLength(100)]
         public string? OtherSubcategory { get; set; }
-
-        [Phone]
-        [MaxLength(20)]
-        public string? Phone { get; set; }
-
-        public DateTime? DateOfBirth { get; set; }
-
     }
 }
