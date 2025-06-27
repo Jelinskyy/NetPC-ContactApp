@@ -1,0 +1,86 @@
+#########################################
+# .NET Core / ASP.NET Core (ContactApi) #
+#########################################
+
+# Build output
+ContactApi/bin/
+ContactApi/obj/
+ContactApi/out/
+
+# User-specific files
+ContactApi/*.user
+ContactApi/*.suo
+ContactApi/.vs/
+ContactApi/.vscode/
+ContactApi/.idea/
+
+# EF Core artifacts
+ContactApi/Migrations/
+ContactApi/*.db
+ContactApi/*.sqlite
+ContactApi/*.db-shm
+ContactApi/*.db-wal
+
+# Logs and test results
+ContactApi/*.log
+ContactApi/TestResults/
+
+# Temporary and debug files
+ContactApi/*.pidb
+ContactApi/*.svclog
+ContactApi/Properties/launchSettings.json
+
+# Environment secrets
+ContactApi/appsettings.Development.json
+ContactApi/appsettings.Local.json
+ContactApi/secrets.json
+ContactApi/.env
+
+# Compiled Razor files
+ContactApi/**/obj/**/Razor/
+
+#########################################
+# Blazor WebAssembly (frontend)         #
+#########################################
+
+# Build output
+frontend/bin/
+frontend/obj/
+frontend/wwwroot/
+frontend/wwwroot/css/
+frontend/wwwroot/js/
+frontend/dist/
+frontend/build/
+
+# User-specific files
+frontend/.vscode/
+frontend/.idea/
+
+# Logs and temp files
+frontend/*.log
+
+# Environment files
+frontend/.env
+frontend/.env.local
+frontend/.env.development
+frontend/.env.production
+
+# Package management (if using npm/yarn for assets)
+frontend/node_modules/
+frontend/package-lock.json
+frontend/yarn.lock
+frontend/pnpm-lock.yaml
+
+#########################################
+# General (applies to both)            #
+#########################################
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Rider-specific
+.idea/
+
+# VS Code settings
+.vscode/
