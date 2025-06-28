@@ -13,6 +13,16 @@ namespace ContactApi.Repositories
             _context = context;
         }
 
+        public async Task<Contact?> AddContactAsync(Contact contact)
+        {
+            await _context.Contacts.AddAsync(contact);
+            await _context.SaveChangesAsync();
+            return await _context.Contacts.AsNoTracking()
+                .Include(c => c.Category)
+                .Include(c => c.BusinessSubcategory)
+                .FirstOrDefaultAsync(c => c.Id == contact.Id);
+        }
+
         public async Task<List<Contact>> GetAllContactsAsync()
         {
             return await _context.Contacts.AsNoTracking()
@@ -23,6 +33,11 @@ namespace ContactApi.Repositories
 
         public async Task<Contact?> GetContactById(int id)
         {
+            if (id <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(id), "ID must be greater than zero");
+            }
+
             return await _context.Contacts.AsNoTracking()
                 .Include(c => c.Category)
                 .Include(c => c.BusinessSubcategory)

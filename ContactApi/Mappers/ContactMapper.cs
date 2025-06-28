@@ -17,5 +17,21 @@ namespace ContactApi.Mappers
                 OtherSubcategory = contact.OtherSubcategory,
             };
         }
+
+        public static Contact ToContact(this CreateContactDto dto)
+        {
+            return new Contact
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email,
+                Phone = dto.Phone,
+                DateOfBirth = dto.DateOfBirth,
+                PasswordHash = string.IsNullOrEmpty(dto.Password) ? null : BCrypt.Net.BCrypt.HashPassword(dto.Password), // Move hshing logic to a service later
+                CategoryId = dto.CategoryId,
+                BusinessSubcategoryId = dto.BusinessSubcategoryId,
+                OtherSubcategory = dto.OtherSubcategory
+            };
+        }
     }
 }
