@@ -23,10 +23,23 @@ namespace ContactApi.Controllers
             {
                 return NotFound("No contacts found.");
             }
-            
+
             var contactDtos = contacts.Select(c => c.ToContactGeneralDto()).ToList();
-            
+
             return Ok(contacts);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetContactById(int id)
+        {
+            var contact = await _contactRepository.GetContactById(id);
+            if (contact == null)
+            {
+                return NotFound($"Contact with ID {id} not found.");
+            }
+
+            var contactDto = contact.ToContactGeneralDto();
+            return Ok(contactDto);
         }
     }
 }

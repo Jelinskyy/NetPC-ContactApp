@@ -20,5 +20,13 @@ namespace ContactApi.Repositories
                 .Include(c => c.BusinessSubcategory)
                 .ToListAsync();
         }
+
+        public async Task<Contact?> GetContactById(int id)
+        {
+            return await _context.Contacts.AsNoTracking()
+                .Include(c => c.Category)
+                .Include(c => c.BusinessSubcategory)
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
     }
 }
