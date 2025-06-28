@@ -17,7 +17,7 @@ namespace ContactApi.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetContacts()
-        {   
+        {
             var contactsDtos = await _service.GetAllContactsAsync();
             return Ok(contactsDtos);
         }
@@ -41,9 +41,26 @@ namespace ContactApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+
             var contact = await _service.CreateContactAsync(contactDto);
             return CreatedAtAction(nameof(GetContactById), new { id = contact.Id }, contact);
+        }
+
+        [HttpPatch("{id:int}")]
+        public async Task<IActionResult> UpdateContact(int id, [FromBody] UpdateContactDto contactUpdateDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var contactDto = await _service.UpdateContactAsync(id, contactUpdateDto);
+            if (contactDto == null)
+            {
+                return NotFound($"Contact with ID {id} not found.");
+            }
+
+            return Ok(contactDto);
         }
     }
 }

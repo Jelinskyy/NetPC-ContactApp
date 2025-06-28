@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ContactApi.Models
 {
     // This class represents a subcategory of a business contact.
+    [Table("BusinessSubcategories")]
     public class BusinessSubcategory
     {
         [Key]

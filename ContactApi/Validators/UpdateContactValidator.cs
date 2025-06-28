@@ -4,10 +4,10 @@ using FluentValidation;
 
 namespace ContactApi.Validators
 {
-    public class CreateContactDtoValidator : AbstractValidator<CreateContactDto>
+    public class UpdateContactValidator : AbstractValidator<UpdateContactDto>
     {
         private readonly IValidationService _validationService;
-        public CreateContactDtoValidator(IValidationService validationService)
+        public UpdateContactValidator(IValidationService validationService)
         {
             _validationService = validationService;
 

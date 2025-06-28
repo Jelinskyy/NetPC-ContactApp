@@ -5,6 +5,7 @@ namespace ContactApi.Models
 {
     // Represents a category of contacts, such as "Business", "Personal", etc.
     // The Category class is used to categorize contacts and can include subcategories.
+    [Table("Categories")]
     public class Category
     {
         [Key]

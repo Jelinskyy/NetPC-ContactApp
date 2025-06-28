@@ -7,5 +7,6 @@ namespace ContactApi.Interfaces
         Task<List<ContactGeneralDto>> GetAllContactsAsync();
         Task<ContactGeneralDto?> GetContactByIdAsync(int id);
         Task<ContactGeneralDto?> CreateContactAsync(CreateContactDto contactDto);
+        Task<ContactGeneralDto?> UpdateContactAsync(int id, UpdateContactDto contactDto);
     }
 }

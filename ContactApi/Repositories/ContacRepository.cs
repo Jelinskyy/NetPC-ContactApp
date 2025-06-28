@@ -33,15 +33,21 @@ namespace ContactApi.Repositories
 
         public async Task<Contact?> GetContactById(int id)
         {
-            if (id <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(id), "ID must be greater than zero");
-            }
-
             return await _context.Contacts.AsNoTracking()
                 .Include(c => c.Category)
                 .Include(c => c.BusinessSubcategory)
                 .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<Contact?> UpdateContactAsync(Contact contact)
+        {
+            _context.Contacts.Update(contact);
+            await _context.SaveChangesAsync();
+
+            return await _context.Contacts.AsNoTracking()
+                .Include(c => c.Category)
+                .Include(c => c.BusinessSubcategory)
+                .FirstOrDefaultAsync(c => c.Id == contact.Id);
         }
     }
 }

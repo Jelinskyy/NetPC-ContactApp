@@ -36,14 +36,51 @@ namespace ContactApi.Services
         public async Task<ContactGeneralDto?> CreateContactAsync(CreateContactDto contactDto)
         {
             var contact = contactDto.ToContact();
-            if (!string.IsNullOrEmpty(contactDto.Password))
-            {
-                contactDto.Password = BCrypt.Net.BCrypt.HashPassword(contactDto.Password);
-            }
+
+            // Hash the password if provided
+            contactDto.Password = !String.IsNullOrEmpty(contactDto.Password) ?
+                BCrypt.Net.BCrypt.HashPassword(contactDto.Password) :
+                null; 
             
             contact = await _contactRepository.AddContactAsync(contact);
             
             return contact?.ToContactGeneralDto();
+        }
+
+        public async Task<ContactGeneralDto?> UpdateContactAsync(int id, UpdateContactDto contactDto)
+        {
+            var contact = contactDto.ToContact();
+
+            // Ensure the contact has the correct ID
+            contact.Id = id;
+            if (contact.Id <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(id), "ID must be greater than zero");
+            }
+
+            // Validate the contact ID exists in the repository
+            var updatedContact = await _contactRepository.GetContactById(id).ContinueWith(async task =>
+            {
+                // If the contact with the specified ID does not exist, return null
+                if (task.Result == null)
+                {
+                    return null;
+                }
+
+                // Hash the password if provided
+                contact.PasswordHash = !string.IsNullOrEmpty(contactDto.Password)
+                    ? BCrypt.Net.BCrypt.HashPassword(contactDto.Password)
+                    : null;
+
+                return await _contactRepository.UpdateContactAsync(contact);
+            }).Unwrap();
+
+            if (updatedContact == null)
+            {
+                return null; // Contact with the specified ID does not exist
+            }
+            
+            return updatedContact.ToContactGeneralDto();
         }
     }
 }

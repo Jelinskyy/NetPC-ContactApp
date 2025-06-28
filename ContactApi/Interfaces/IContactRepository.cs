@@ -6,6 +6,7 @@ namespace ContactApi.Interfaces
     {
         Task<Contact?> AddContactAsync(Contact contact);
         Task<List<Contact>> GetAllContactsAsync();
-        Task <Contact?> GetContactById(int id);
+        Task<Contact?> GetContactById(int id);
+        Task<Contact?> UpdateContactAsync(Contact contact);
     }
 }

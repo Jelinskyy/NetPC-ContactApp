@@ -15,32 +15,32 @@ namespace ContactApi.Services
             _categoryRepository = categoryRepository;
             _businessSubcategoryRepository = businessSubcategoryRepository;
         }
-        public Task<bool> IsValidBusinessSubcategoryIdAsync(int? businessSubcategoryId, CancellationToken cancellationToken = default)
+        public async Task<bool> IsValidBusinessSubcategoryIdAsync(int? businessSubcategoryId, CancellationToken cancellationToken = default)
         {
             if (businessSubcategoryId == null || businessSubcategoryId <= 0)
             {
-                return Task.FromResult(false); // Invalid subcategory ID
+                return false; // Invalid subcategory ID
             }
-            return _businessSubcategoryRepository.ExistsByIdAsync(businessSubcategoryId);
+            return await _businessSubcategoryRepository.ExistsByIdAsync(businessSubcategoryId);
         }
 
-        public Task<bool> IsValidBusinessSubcategoryIdAsync(int businessSubcategoryId, CancellationToken cancellationToken = default)
+        public async Task<bool> IsValidBusinessSubcategoryIdAsync(int businessSubcategoryId, CancellationToken cancellationToken = default)
         {
-            return IsValidBusinessSubcategoryIdAsync((int?)businessSubcategoryId, cancellationToken);
+            return await IsValidBusinessSubcategoryIdAsync((int?)businessSubcategoryId, cancellationToken);
         }
 
-        public Task<bool> IsValidCategoryIdAsync(int? categoryId, CancellationToken cancellationToken = default)
+        public async Task<bool> IsValidCategoryIdAsync(int? categoryId, CancellationToken cancellationToken = default)
         {
             if (categoryId == null || categoryId <= 0)
             {
-                return Task.FromResult(false); // Invalid category ID
+                return false; // Invalid category ID
             }
-            return _categoryRepository.ExistsByIdAsync(categoryId);
+            return await _categoryRepository.ExistsByIdAsync(categoryId);
         }
 
-        public Task<bool> IsValidCategoryIdAsync(int categoryId, CancellationToken cancellationToken = default)
+        public async Task<bool> IsValidCategoryIdAsync(int categoryId, CancellationToken cancellationToken = default)
         {
-            return IsValidCategoryIdAsync((int?)categoryId, cancellationToken);
+            return await IsValidCategoryIdAsync((int?)categoryId, cancellationToken);
         }
     }
 }

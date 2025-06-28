@@ -1,22 +1,18 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ContactApi.Models
+namespace ContactApi.Dtos.Contacts
 {
-    [Table("Contacts")]
-    public class Contact
+    public class UpdateContactDto
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Required]
+        [MinLength(1)]
+        [MaxLength(100)]
+        public string FirstName { get; set; }
 
         [Required]
+        [MinLength(1)]
         [MaxLength(100)]
-        public string FirstName { get; set; } = string.Empty;
-
-        [Required]
-        [MaxLength(100)]
-        public string LastName { get; set; } = string.Empty;
+        public string LastName { get; set; }
 
         [EmailAddress]
         [MaxLength(255)]
@@ -29,19 +25,14 @@ namespace ContactApi.Models
         [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
 
-        public string? PasswordHash { get; set; }
+        public string? Password { get; set; }
 
         // Foreign key to Category
         [Required]
-        [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
 
-        public Category Category { get; set; }
-
-        // Foreign key to BusinessSubcategoryId, optional
-        [ForeignKey(nameof(BusinessSubcategory))]
+        // Foreign key to Subcategory, optional
         public int? BusinessSubcategoryId { get; set; }
-        public BusinessSubcategory? BusinessSubcategory { get; set; }
 
         // Free text for other subcategory if Category = "Other"
         [MaxLength(100)]

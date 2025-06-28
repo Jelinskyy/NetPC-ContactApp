@@ -33,5 +33,21 @@ namespace ContactApi.Mappers
                 OtherSubcategory = dto.OtherSubcategory
             };
         }
+
+        public static Contact ToContact(this UpdateContactDto dto)
+        {
+            return new Contact
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email,
+                Phone = dto.Phone,
+                DateOfBirth = dto.DateOfBirth,
+                PasswordHash = dto.Password, // Assuming Password is a hash in the DTO
+                CategoryId = dto.CategoryId,
+                BusinessSubcategoryId = dto.BusinessSubcategoryId,
+                OtherSubcategory = dto.OtherSubcategory
+            };
+        }
     }
 }
