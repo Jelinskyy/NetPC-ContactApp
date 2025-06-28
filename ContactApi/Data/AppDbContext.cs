@@ -12,7 +12,7 @@ namespace ContactApi.Data
         }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<BusinessSubcategory> Subcategories { get; set; }
+        public DbSet<BusinessSubcategory> BusinessSubcategories { get; set; }
         
         // Seeding data for initial categories and subcategories
         // This is useful for testing and initial setup

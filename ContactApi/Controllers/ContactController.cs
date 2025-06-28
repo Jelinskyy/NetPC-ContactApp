@@ -41,9 +41,9 @@ namespace ContactApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateContact([FromBody] CreateContactDto contactDto)
         {
-            if (contactDto == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Contact data is required.");
+                return BadRequest(ModelState);
             }
             
             var contact = await _service.CreateContactAsync(contactDto);
