@@ -1,7 +1,5 @@
 using ContactApi.Dtos.Contacts;
 using ContactApi.Interfaces;
-using ContactApi.Mappers;
-using ContactApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactApi.Controllers
@@ -10,13 +8,11 @@ namespace ContactApi.Controllers
     [ApiController]
     public class ContactController : ControllerBase
     {
-        private readonly IContactRepository _contactRepository;
-        private readonly ContactService _service;
+        private readonly IContactService _service;
 
-        public ContactController(IContactRepository contactRepository, ContactService service)
+        public ContactController(IContactService service)
         {
             _service = service;
-            _contactRepository = contactRepository;
         }
 
         [HttpGet]
