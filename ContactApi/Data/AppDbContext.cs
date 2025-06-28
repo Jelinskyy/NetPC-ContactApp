@@ -20,12 +20,19 @@ namespace ContactApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Seed initial categories and subcategories
+            // do not change the order or the IDs, they are used in validation
+
+            // Categories
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Prywatny" }, // Private
                 new Category { Id = 2, Name = "Służbowy" }, // Business
                 new Category { Id = 3, Name = "Inny" } // Other
             );
 
+            // Business Subcategories
+            // These are only relevant if the Category is "Służbowy" (Business)
+            // They are optional, so they can be null
             modelBuilder.Entity<BusinessSubcategory>().HasData(
                 new BusinessSubcategory { Id = 1, Name = "Szef" }, // Boss
                 new BusinessSubcategory { Id = 2, Name = "Klient" }, // Client

@@ -11,21 +11,21 @@ namespace ContactApi.Models
 
         [Required]
         [MaxLength(100)]
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(100)]
-        public string LastName { get; set; }
+        [MaxLength(100)] 
+        public string LastName { get; set; } = string.Empty;
 
-        [Required]
         [EmailAddress]
         [MaxLength(255)]
-        public string Email { get; set; } // Make unique via Fluent API
+        public string? Email { get; set; }
 
         [Phone]
         [MaxLength(20)]
         public string? Phone { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
 
         public string? PasswordHash { get; set; }
@@ -37,7 +37,7 @@ namespace ContactApi.Models
 
         public Category Category { get; set; }
 
-        // Foreign key to Subcategory, optional
+        // Foreign key to BusinessSubcategoryId, optional
         [ForeignKey(nameof(BusinessSubcategory))]
         public int? BusinessSubcategoryId { get; set; }
         public BusinessSubcategory? BusinessSubcategory { get; set; }
