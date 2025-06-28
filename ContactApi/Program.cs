@@ -1,6 +1,7 @@
 using ContactApi.Data;
 using ContactApi.Interfaces;
 using ContactApi.Repositories;
+using ContactApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IContactRepository, ContacRepository>();
+builder.Services.AddScoped<ContactService>();
 
 var app = builder.Build();
 

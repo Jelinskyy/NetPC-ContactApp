@@ -27,7 +27,7 @@ namespace ContactApi.Mappers
                 Email = dto.Email,
                 Phone = dto.Phone,
                 DateOfBirth = dto.DateOfBirth,
-                PasswordHash = string.IsNullOrEmpty(dto.Password) ? null : BCrypt.Net.BCrypt.HashPassword(dto.Password), // Move hshing logic to a service later
+                PasswordHash = dto.Password, // Assuming Password is a hash in the DTO
                 CategoryId = dto.CategoryId,
                 BusinessSubcategoryId = dto.BusinessSubcategoryId,
                 OtherSubcategory = dto.OtherSubcategory

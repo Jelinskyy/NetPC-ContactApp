@@ -1,6 +1,7 @@
 using ContactApi.Dtos.Contacts;
 using ContactApi.Interfaces;
 using ContactApi.Mappers;
+using ContactApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactApi.Controllers
@@ -10,36 +11,30 @@ namespace ContactApi.Controllers
     public class ContactController : ControllerBase
     {
         private readonly IContactRepository _contactRepository;
+        private readonly ContactService _service;
 
-        public ContactController(IContactRepository contactRepository)
+        public ContactController(IContactRepository contactRepository, ContactService service)
         {
+            _service = service;
             _contactRepository = contactRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetContacts()
-        {
-            var contacts = await _contactRepository.GetAllContactsAsync();
-            if (contacts == null || !contacts.Any())
-            {
-                return NotFound("No contacts found.");
-            }
-
-            var contactDtos = contacts.Select(c => c.ToContactGeneralDto()).ToList();
-
-            return Ok(contacts);
+        {   
+            var contactsDtos = await _service.GetAllContactsAsync();
+            return Ok(contactsDtos);
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetContactById(int id)
         {
-            var contact = await _contactRepository.GetContactById(id);
-            if (contact == null)
+            var contactDto = await _service.GetContactByIdAsync(id);
+            if (contactDto == null)
             {
                 return NotFound($"Contact with ID {id} not found.");
             }
 
-            var contactDto = contact.ToContactGeneralDto();
             return Ok(contactDto);
         }
 
@@ -50,10 +45,9 @@ namespace ContactApi.Controllers
             {
                 return BadRequest("Contact data is required.");
             }
-
-            var contact = contactDto.ToContact();
-            contact = await _contactRepository.AddContactAsync(contact);
-            return CreatedAtAction(nameof(GetContactById), new { id = contact.Id }, contact.ToContactGeneralDto());
+            
+            var contact = await _service.CreateContactAsync(contactDto);
+            return CreatedAtAction(nameof(GetContactById), new { id = contact.Id }, contact);
         }
     }
 }
