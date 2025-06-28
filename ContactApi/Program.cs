@@ -28,6 +28,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IContactRepository, ContacRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IBusinessSubcategoryRepository, BusinessSubcategoryRepository>();
 builder.Services.AddScoped<ContactService>();
 
 var app = builder.Build();
