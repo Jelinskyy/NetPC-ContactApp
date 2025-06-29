@@ -1,16 +1,12 @@
 using ContactApi.Dtos.Contacts;
-using ContactApi.Interfaces;
 using FluentValidation;
 
 namespace ContactApi.Validators
 {
     public class UpdateContactValidator : AbstractValidator<UpdateContactDto>
     {
-        private readonly IValidationService _validationService;
-        public UpdateContactValidator(IValidationService validationService)
+        public UpdateContactValidator()
         {
-            _validationService = validationService;
-
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("imie jest wymagane.")
                 .MaximumLength(100);
@@ -43,13 +39,11 @@ namespace ContactApi.Validators
                 .WithMessage("hasło musi mieć co najmniej 8 znaków, zawierać wielką literę, małą literę, cyfrę i znak specjalny.");
 
             RuleFor(x => x.CategoryId)
-                .NotNull().WithMessage("kategoria jest wymagana.")
-                .MustAsync(_validationService.IsValidCategoryIdAsync).WithMessage("nieprawidłowa kategoria.");
+                .NotNull().WithMessage("kategoria jest wymagana.");
 
             // Conditional: If Category == Business, BusinessSubcategoryId must be set
             RuleFor(x => x.BusinessSubcategoryId)
                 .NotNull().WithMessage("subkategoria biznesowa jest wymagana.")
-                .MustAsync(_validationService.IsValidBusinessSubcategoryIdAsync).WithMessage("nieprawidłowa subkategoria biznesowa.")
                 .When(x => x.CategoryId == 2); // Checking if Category is Business (setted in AppDbContext)
 
 

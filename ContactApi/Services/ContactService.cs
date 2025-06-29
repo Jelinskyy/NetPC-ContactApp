@@ -7,9 +7,11 @@ namespace ContactApi.Services
     public class ContactService : IContactService
     {
         private readonly IContactRepository _contactRepository;
+        private readonly IValidationService _validationService;
 
-        public ContactService(IContactRepository contactRepository)
+        public ContactService(IContactRepository contactRepository, IValidationService validationService)
         {
+            _validationService = validationService;
             _contactRepository = contactRepository;
         }
 
@@ -37,6 +39,14 @@ namespace ContactApi.Services
         {
             var contact = contactDto.ToContact();
 
+            // Check if CategoryId is valid
+            if (!await _validationService.IsValidCategoryIdAsync(contactDto.CategoryId))
+                throw new ArgumentException("Nieprawidłowa kategoria.");
+
+            // Check if BusinessSubcategoryId is valid when CategoryId is Business
+            if (contactDto.CategoryId == 2 && !await _validationService.IsValidBusinessSubcategoryIdAsync(contactDto.BusinessSubcategoryId))
+                throw new ArgumentException("Nieprawidłowa subkategoria biznesowa.");
+
             // Hash the password if provided
             contactDto.Password = !String.IsNullOrEmpty(contactDto.Password) ?
                 BCrypt.Net.BCrypt.HashPassword(contactDto.Password) :
@@ -49,14 +59,19 @@ namespace ContactApi.Services
 
         public async Task<ContactGeneralDto?> UpdateContactAsync(int id, UpdateContactDto contactDto)
         {
+        
             var contact = contactDto.ToContact();
 
             // Ensure the contact has the correct ID
             contact.Id = id;
-            if (contact.Id <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(id), "ID must be greater than zero");
-            }
+
+            // Check if CategoryId is valid
+            if (!await _validationService.IsValidCategoryIdAsync(contactDto.CategoryId))
+                throw new ArgumentException("Nieprawidłowa kategoria.");
+
+            // Check if BusinessSubcategoryId is valid when CategoryId is Business
+            if (contactDto.CategoryId == 2 && !await _validationService.IsValidBusinessSubcategoryIdAsync(contactDto.BusinessSubcategoryId))
+                throw new ArgumentException("Nieprawidłowa subkategoria biznesowa.");
 
             // Validate the contact ID exists in the repository
             var updatedContact = await _contactRepository.GetContactById(id).ContinueWith(async task =>

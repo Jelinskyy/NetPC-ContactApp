@@ -1,16 +1,13 @@
+using System.ComponentModel.DataAnnotations;
 using ContactApi.Dtos.Contacts;
-using ContactApi.Interfaces;
 using FluentValidation;
 
 namespace ContactApi.Validators
 {
     public class CreateContactDtoValidator : AbstractValidator<CreateContactDto>
     {
-        private readonly IValidationService _validationService;
-        public CreateContactDtoValidator(IValidationService validationService)
+        public CreateContactDtoValidator()
         {
-            _validationService = validationService;
-
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("imie jest wymagane.")
                 .MaximumLength(100);
@@ -29,9 +26,10 @@ namespace ContactApi.Validators
 
             // Validation for phone number
             // Phone number must be in the format +123456789 or 123456789
-            // It can contain 7 to 15 digits and may start with a '+' sign
+            // It can contain 7 to 15 digits
             RuleFor(x => x.Phone)
-                .Matches(@"^\+?[\d\s\-().]{7,}$")
+                .Must(x => new PhoneAttribute().IsValid(x))
+                .WithMessage("Nieprawidłowy numer telefonu.")
                 .When(x => !string.IsNullOrEmpty(x.Phone)); // Only validate if Phone is provided 
 
             // Validation for password
@@ -43,13 +41,11 @@ namespace ContactApi.Validators
                 .WithMessage("hasło musi mieć co najmniej 8 znaków, zawierać wielką literę, małą literę, cyfrę i znak specjalny.");
 
             RuleFor(x => x.CategoryId)
-                .NotNull().WithMessage("kategoria jest wymagana.")
-                .MustAsync(_validationService.IsValidCategoryIdAsync).WithMessage("nieprawidłowa kategoria.");
+                .NotNull().WithMessage("kategoria jest wymagana.");
 
             // Conditional: If Category == Business, BusinessSubcategoryId must be set
             RuleFor(x => x.BusinessSubcategoryId)
                 .NotNull().WithMessage("subkategoria biznesowa jest wymagana.")
-                .MustAsync(_validationService.IsValidBusinessSubcategoryIdAsync).WithMessage("nieprawidłowa subkategoria biznesowa.")
                 .When(x => x.CategoryId == 2); // Checking if Category is Business (setted in AppDbContext)
 
 

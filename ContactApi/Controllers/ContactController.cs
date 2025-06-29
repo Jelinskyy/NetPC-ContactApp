@@ -28,7 +28,7 @@ namespace ContactApi.Controllers
             var contactDto = await _service.GetContactByIdAsync(id);
             if (contactDto == null)
             {
-                return NotFound($"Contact with ID {id} not found.");
+                return NotFound($"Nie ma kontaktu o ID {id}.");
             }
 
             return Ok(contactDto);
@@ -42,8 +42,15 @@ namespace ContactApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var contact = await _service.CreateContactAsync(contactDto);
-            return CreatedAtAction(nameof(GetContactById), new { id = contact.Id }, contact);
+            try
+            {
+                var contact = await _service.CreateContactAsync(contactDto);
+                return CreatedAtAction(nameof(GetContactById), new { id = contact.Id }, contact);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPatch("{id:int}")]
@@ -54,13 +61,20 @@ namespace ContactApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var contactDto = await _service.UpdateContactAsync(id, contactUpdateDto);
-            if (contactDto == null)
+            try
             {
-                return NotFound($"Contact with ID {id} not found.");
-            }
+                var contactDto = await _service.UpdateContactAsync(id, contactUpdateDto);
+                if (contactDto == null)
+                {
+                    return NotFound($"Nie ma kontaktu o ID {id}.");
+                }
 
-            return Ok(contactDto);
+                return Ok(contactDto);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

@@ -2,6 +2,9 @@ using ContactApi.Data;
 using ContactApi.Interfaces;
 using ContactApi.Repositories;
 using ContactApi.Services;
+using ContactApi.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +30,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
+builder.Services.AddControllers(); 
+
+// Add FluentValidation services
+// This enables automatic validation of models using FluentValidation
+builder.Services
+    .AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters();
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateContactDtoValidator>();
+
+// Register repositories and services
+// This allows for dependency injection of these interfaces and their implementations
 builder.Services.AddScoped<IContactRepository, ContacRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IBusinessSubcategoryRepository, BusinessSubcategoryRepository>();

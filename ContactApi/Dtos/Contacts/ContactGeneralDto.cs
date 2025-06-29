@@ -11,8 +11,7 @@ namespace ContactApi.Dtos.Contacts
         public CategoryDto Category { get; set; } = new CategoryDto();
         /// Only populated if Category = 'Służbowy'
         public BusinessSubcategoryDto ? BusinessSubcategory  { get; set; }
-        /// Only populated if Category = 'inny
-        /// '
+        /// Only populated if Category = 'inny'
         public string? OtherSubcategory { get; set; }
     }
 }
