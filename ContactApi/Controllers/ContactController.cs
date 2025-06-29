@@ -1,5 +1,6 @@
 using ContactApi.Dtos.Contacts;
 using ContactApi.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactApi.Controllers
@@ -23,6 +24,7 @@ namespace ContactApi.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetContactById(int id)
         {
             var contactDto = await _service.GetContactByIdAsync(id);
@@ -35,6 +37,7 @@ namespace ContactApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateContact([FromBody] CreateContactDto contactDto)
         {
             if (!ModelState.IsValid)
@@ -54,6 +57,7 @@ namespace ContactApi.Controllers
         }
 
         [HttpPatch("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> UpdateContact(int id, [FromBody] UpdateContactDto contactUpdateDto)
         {
             if (!ModelState.IsValid)
@@ -78,6 +82,7 @@ namespace ContactApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> DeleteContact(int id)
         {
             try

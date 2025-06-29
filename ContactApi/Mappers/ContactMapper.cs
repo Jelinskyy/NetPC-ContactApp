@@ -18,6 +18,22 @@ namespace ContactApi.Mappers
             };
         }
 
+        public static ContactDetailDto ToContactDetailDto(this Contact contact)
+        {
+            return new ContactDetailDto
+            {
+                Id = contact.Id,
+                FirstName = contact.FirstName,
+                LastName = contact.LastName,
+                Email = contact.Email,
+                PhoneNumber = contact.Phone,
+                birthDate = contact.DateOfBirth,
+                Category = contact.Category.ToCategoryDto(),
+                BusinessSubcategory = contact.BusinessSubcategory == null ? null : contact.BusinessSubcategory.ToBusinessSubcategoryDto(),
+                OtherSubcategory = contact.OtherSubcategory,
+            };
+        }
+
         public static Contact ToContact(this CreateContactDto dto)
         {
             return new Contact

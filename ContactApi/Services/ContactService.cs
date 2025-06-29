@@ -29,17 +29,17 @@ namespace ContactApi.Services
             return contacts.Select(c => c.ToContactGeneralDto()).ToList();
         }
 
-        public async Task<ContactGeneralDto?> GetContactByIdAsync(int id)
+        public async Task<ContactDetailDto?> GetContactByIdAsync(int id)
         {
             var contact = await _contactRepository.GetContactById(id);
             if (contact == null)
             {
                 return null;
             }
-            return contact.ToContactGeneralDto();
+            return contact.ToContactDetailDto();
         }
 
-        public async Task<ContactGeneralDto?> CreateContactAsync(CreateContactDto contactDto)
+        public async Task<ContactDetailDto?> CreateContactAsync(CreateContactDto contactDto)
         {
             var contact = contactDto.ToContact();
 
@@ -58,10 +58,10 @@ namespace ContactApi.Services
 
             contact = await _contactRepository.AddContactAsync(contact);
 
-            return contact?.ToContactGeneralDto();
+            return contact?.ToContactDetailDto();
         }
 
-        public async Task<ContactGeneralDto?> UpdateContactAsync(int id, UpdateContactDto contactDto)
+        public async Task<ContactDetailDto?> UpdateContactAsync(int id, UpdateContactDto contactDto)
         {
 
             var contact = contactDto.ToContact();
@@ -99,7 +99,7 @@ namespace ContactApi.Services
                 return null; // Contact with the specified ID does not exist
             }
 
-            return updatedContact.ToContactGeneralDto();
+            return updatedContact.ToContactDetailDto();
         }
 
         public async Task DeleteContactAsync(int id)
