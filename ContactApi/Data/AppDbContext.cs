@@ -1,9 +1,10 @@
 using ContactApi.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContactApi.Data 
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -32,7 +33,6 @@ namespace ContactApi.Data
 
             // Business Subcategories
             // These are only relevant if the Category is "Służbowy" (Business)
-            // They are optional, so they can be null
             modelBuilder.Entity<BusinessSubcategory>().HasData(
                 new BusinessSubcategory { Id = 1, Name = "Szef" }, // Boss
                 new BusinessSubcategory { Id = 2, Name = "Klient" }, // Client

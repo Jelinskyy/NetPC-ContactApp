@@ -1,13 +1,13 @@
 using ContactApi.Dtos.Contacts;
 using ContactApi.Interfaces;
 using ContactApi.Mappers;
-using ContactApi.Models;
 
 namespace ContactApi.Services
 {
-    
+
     // To Do:
     // - Add authorization for contact password 
+    // - Repllace BCrypt with a identity framework for password hashing
     public class ContactService : IContactService
     {
         private readonly IContactRepository _contactRepository;
