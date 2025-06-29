@@ -119,6 +119,7 @@ builder.Services.AddScoped<IBusinessSubcategoryRepository, BusinessSubcategoryRe
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<IValidationService, ValidationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 
