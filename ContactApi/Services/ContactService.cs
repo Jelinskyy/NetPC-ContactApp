@@ -1,9 +1,13 @@
 using ContactApi.Dtos.Contacts;
 using ContactApi.Interfaces;
 using ContactApi.Mappers;
+using ContactApi.Models;
 
 namespace ContactApi.Services
 {
+    
+    // To Do:
+    // - Add authorization for contact password 
     public class ContactService : IContactService
     {
         private readonly IContactRepository _contactRepository;
@@ -33,8 +37,8 @@ namespace ContactApi.Services
                 return null;
             }
             return contact.ToContactGeneralDto();
-        }     
-        
+        }
+
         public async Task<ContactGeneralDto?> CreateContactAsync(CreateContactDto contactDto)
         {
             var contact = contactDto.ToContact();
@@ -50,16 +54,16 @@ namespace ContactApi.Services
             // Hash the password if provided
             contactDto.Password = !String.IsNullOrEmpty(contactDto.Password) ?
                 BCrypt.Net.BCrypt.HashPassword(contactDto.Password) :
-                null; 
-            
+                null;
+
             contact = await _contactRepository.AddContactAsync(contact);
-            
+
             return contact?.ToContactGeneralDto();
         }
 
         public async Task<ContactGeneralDto?> UpdateContactAsync(int id, UpdateContactDto contactDto)
         {
-        
+
             var contact = contactDto.ToContact();
 
             // Ensure the contact has the correct ID
@@ -94,8 +98,20 @@ namespace ContactApi.Services
             {
                 return null; // Contact with the specified ID does not exist
             }
-            
+
             return updatedContact.ToContactGeneralDto();
+        }
+
+        public async Task DeleteContactAsync(int id)
+        {
+            // Validate the contact ID exists in the repository
+            var contact = await _contactRepository.GetContactById(id);
+            if (contact == null)
+            {
+                throw new ArgumentException($"Nie ma kontaktu o ID {id}.");
+            }
+
+            await _contactRepository.DeleteContactAsync(contact);
         }
     }
 }

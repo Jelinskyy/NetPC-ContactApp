@@ -1,4 +1,5 @@
 using ContactApi.Dtos.Contacts;
+using ContactApi.Models;
 
 namespace ContactApi.Interfaces
 {
@@ -8,5 +9,6 @@ namespace ContactApi.Interfaces
         Task<ContactGeneralDto?> GetContactByIdAsync(int id);
         Task<ContactGeneralDto?> CreateContactAsync(CreateContactDto contactDto);
         Task<ContactGeneralDto?> UpdateContactAsync(int id, UpdateContactDto contactDto);
+        Task DeleteContactAsync(int id);
     }
 }

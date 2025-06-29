@@ -23,6 +23,12 @@ namespace ContactApi.Repositories
                 .FirstOrDefaultAsync(c => c.Id == contact.Id);
         }
 
+        public Task DeleteContactAsync(Contact contact)
+        {
+            _context.Contacts.Remove(contact);
+            return _context.SaveChangesAsync();
+        }
+
         public async Task<List<Contact>> GetAllContactsAsync()
         {
             return await _context.Contacts.AsNoTracking()

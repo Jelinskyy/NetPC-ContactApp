@@ -76,5 +76,20 @@ namespace ContactApi.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteContact(int id)
+        {
+            try
+            {
+                // DeleteContactAsync will throw an exception if the contact does not exist
+                await _service.DeleteContactAsync(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }
